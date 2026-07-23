@@ -69,6 +69,41 @@ jobs:
             mv release/omnicomplete-win.exe release/omnicomplete-windows-x64.exe || true
           fi
 
+      - name: Codesign and Notarize (macOS only)
+        if: matrix.os == 'macos-latest'
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+        run: |
+          if [ -z "$APPLE_CERTIFICATE" ]; then
+            echo "Skipping codesigning because Apple Developer Secrets are missing."
+            exit 0
+          fi
+          
+          # Import Certificate
+          echo "$APPLE_CERTIFICATE" | base64 --decode > cert.p12
+          security create-keychain -p "" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "" build.keychain
+          security import cert.p12 -k build.keychain -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" build.keychain
+          
+          # Sign the binaries
+          for bin in release/omnicomplete-macos*; do
+            codesign --force --options runtime --sign "Developer ID Application" --timestamp "$bin"
+            
+            # Notarize
+            zip -j "$bin.zip" "$bin"
+            xcrun notarytool submit "$bin.zip" --apple-id "$APPLE_ID" --password "$APPLE_APP_PASSWORD" --team-id "$APPLE_TEAM_ID" --wait
+            
+            # Staple ticket
+            xcrun stapler staple "$bin"
+            rm "$bin.zip"
+          done
+
       - name: Upload Binaries to Release
         uses: softprops/action-gh-release@v1
         with:
