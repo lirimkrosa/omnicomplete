@@ -1,18 +1,21 @@
 {
-  "name": "cli-autocomplete",
+  "name": "omnicomplete",
   "version": "1.0.0",
-  "description": "Kiro-compatible CLI autocomplete system",
+  "description": "A blazingly fast, native autocomplete UI for Zsh",
   "type": "module",
   "scripts": {
     "build": "node scripts/build.js",
-    "start": "node bin/cli.js"
+    "start": "node bin/cli.js",
+    "prepublishOnly": "npm run build"
   },
+  "files": [
+    "dist"
+  ],
   "bin": {
-    "omni": "./bin/cli.js"
+    "omni": "./dist/cli.js"
   },
   "devDependencies": {
-    "esbuild": "^0.28.1",
-    "pkg": "^5.8.1"
+    "esbuild": "^0.28.1"
   },
   "dependencies": {
     "systray2": "^2.1.4"
