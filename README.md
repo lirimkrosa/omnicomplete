@@ -29,10 +29,10 @@ brew tap lirimkrosa/omnicomplete
 brew install omnicomplete
 ```
 
-### 3. Hook into your shell
-Add the following line to the bottom of your `~/.zshrc`:
+### 3. Install the shell integration
+Simply run the built-in integrations command to automatically configure your shell (Zsh, Bash, or Fish):
 ```bash
-eval "$(omni hook zsh)"
+omni integrations install autocomplete
 ```
 
 ### 4. Reload your shell
