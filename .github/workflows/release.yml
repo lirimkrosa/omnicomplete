@@ -54,13 +54,13 @@ jobs:
 
       - name: Compile Executables
         run: |
+          sudo apt-get update && sudo apt-get install -y ldid
           mkdir -p release
           pkg ./bin-dist/package.json --targets node18-macos-x64,node18-macos-arm64,node18-linux-x64,node18-win-x64 --out-path release
-          # Rename output binaries to standard convention
-          mv release/omnicomplete-macos release/omnicomplete-macos-x64
-          mv release/omnicomplete-macos-arm64 release/omnicomplete-macos-arm64
-          mv release/omnicomplete-linux release/omnicomplete-linux-x64
-          mv release/omnicomplete-win.exe release/omnicomplete-windows-x64.exe
+          # pkg automatically appends the architecture when multiple targets share an OS.
+          # Rename the Windows and Linux binaries to our preferred convention
+          mv release/omnicomplete-linux release/omnicomplete-linux-x64 || true
+          mv release/omnicomplete-win.exe release/omnicomplete-windows-x64.exe || true
 
       - name: Upload Binaries to Release
         uses: softprops/action-gh-release@v1
