@@ -1,0 +1,70 @@
+name: Release Binaries
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: Build Binaries
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Install PKG Globally
+        run: npm install -g pkg esbuild
+
+      - name: Bundle for Binary
+        run: |
+          mkdir -p bin-dist
+          cat << 'EOF' > scripts/build-binary.js
+          import { build } from 'esbuild';
+          import { cpSync, rmSync, mkdirSync, writeFileSync } from 'fs';
+          rmSync('./bin-dist', { recursive: true, force: true });
+          mkdirSync('./bin-dist');
+          await build({
+            entryPoints: ['bin/cli.js'],
+            bundle: true,
+            platform: 'node',
+            format: 'cjs',
+            outfile: 'bin-dist/cli.cjs',
+            minify: true,
+          });
+          writeFileSync('bin-dist/package.json', JSON.stringify({
+            name: "omnicomplete",
+            version: process.env.GITHUB_REF_NAME || "1.0.0",
+            bin: "cli.cjs"
+          }));
+          cpSync('./src/specs', './bin-dist/specs', { recursive: true });
+          EOF
+          node scripts/build-binary.js
+
+      - name: Compile Executables
+        run: |
+          mkdir -p release
+          pkg ./bin-dist/package.json --targets node18-macos-x64,node18-linux-x64,node18-win-x64 --out-path release
+          # Rename output binaries to standard convention
+          mv release/omnicomplete-macos release/omnicomplete-macos-x64
+          mv release/omnicomplete-linux release/omnicomplete-linux-x64
+          mv release/omnicomplete-win.exe release/omnicomplete-windows-x64.exe
+
+      - name: Upload Binaries to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            release/omnicomplete-macos-x64
+            release/omnicomplete-linux-x64
+            release/omnicomplete-windows-x64.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

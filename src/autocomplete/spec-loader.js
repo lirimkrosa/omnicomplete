@@ -12,11 +12,16 @@ import { homedir } from 'os';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+let currentDir;
+try {
+  currentDir = typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
+} catch (e) {
+  // Fallback for esbuild CJS bundle
+  currentDir = __dirname || process.cwd();
+}
 
-const devSpecDir = join(__dirname, '..', 'specs');
-const prodSpecDir = join(__dirname, 'specs');
+const devSpecDir = join(currentDir, '..', 'specs');
+const prodSpecDir = join(currentDir, 'specs');
 const BUILTIN_SPEC_DIR = existsSync(devSpecDir) ? devSpecDir : prodSpecDir;
 const USER_SPEC_DIR = join(homedir(), '.cli-autocomplete', 'specs');
 const LEGACY_FIG_DIR = join(homedir(), '.fig', 'autocomplete', 'build');

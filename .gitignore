@@ -9,3 +9,5 @@ test_*.txt
 test-*.mjs
 zsh_*.zsh
 Tarmac/
+bin-dist/
+release/

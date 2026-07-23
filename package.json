@@ -11,7 +11,8 @@
     "omni": "./bin/cli.js"
   },
   "devDependencies": {
-    "esbuild": "^0.28.1"
+    "esbuild": "^0.28.1",
+    "pkg": "^5.8.1"
   },
   "dependencies": {
     "systray2": "^2.1.4"
