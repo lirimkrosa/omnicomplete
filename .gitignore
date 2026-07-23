@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.DS_Store
+*.out
+test-*.js
+test_*.js
+test_*.zsh
+test_*.txt
+test-*.mjs
+zsh_*.zsh
+Tarmac/

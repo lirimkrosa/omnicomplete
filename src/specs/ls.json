@@ -1,0 +1,18 @@
+{
+  "name": "ls",
+  "description": "List directory contents",
+  "args": [
+    {
+      "name": "file",
+      "generators": [
+        { "custom": "filepaths" }
+      ]
+    }
+  ],
+  "options": [
+    { "name": "-a", "alias": "--all", "description": "Do not ignore entries starting with ." },
+    { "name": "-l", "description": "Use a long listing format" },
+    { "name": "-h", "alias": "--human-readable", "description": "With -l and/or -s, print human readable sizes" },
+    { "name": "-t", "description": "Sort by modification time, newest first" }
+  ]
+}

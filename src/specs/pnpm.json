@@ -1,0 +1,64 @@
+{
+  "name": "pnpm",
+  "description": "Fast, disk space efficient package manager",
+  "args": [
+    {
+      "name": "script",
+      "generators": [
+        { "custom": "npm.scripts" }
+      ]
+    }
+  ],
+  "subcommands": [
+    { "name": "add", "description": "Installs a package and any packages that it depends on", "options": [
+      { "name": "--save-dev", "alias": "-D", "description": "Save package to your devDependencies" },
+      { "name": "--save-peer", "description": "Save package to your peerDependencies" },
+      { "name": "--save-exact", "alias": "-E", "description": "Install exact version" },
+      { "name": "--global", "alias": "-g", "description": "Install as a global package" },
+      { "name": "--workspace", "description": "Only adds the new dependency if it is found in the workspace" }
+    ]},
+    { "name": "install", "alias": "i", "description": "Install all dependencies for a project", "options": [
+      { "name": "--prod", "alias": "-P", "description": "Packages in devDependencies won't be installed" },
+      { "name": "--frozen-lockfile", "description": "Don't generate a lockfile and fail if an update is needed" },
+      { "name": "--prefer-offline", "description": "Prefer offline resolution" },
+      { "name": "--ignore-scripts", "description": "Don't execute any scripts defined in the project package.json" }
+    ]},
+    { "name": "remove", "alias": "rm", "description": "Removes packages from node_modules and from the project's package.json", "options": [
+      { "name": "--global", "alias": "-g", "description": "Remove global package" }
+    ]},
+    { "name": "run", "description": "Runs a defined package script", "args": [
+      {
+        "name": "script",
+        "generators": [
+          { "custom": "npm.scripts" }
+        ]
+      }
+    ]},
+    { "name": "update", "alias": "up", "description": "Updates packages to their latest version based on the specified range", "options": [
+      { "name": "--latest", "alias": "-L", "description": "Update to latest version" },
+      { "name": "--interactive", "alias": "-i", "description": "Show interactive UI" }
+    ]},
+    { "name": "audit", "description": "Checks for known security issues with the installed packages" },
+    { "name": "build", "description": "Run the build script" },
+    { "name": "test", "description": "Run the test script" },
+    { "name": "start", "description": "Run the start script" },
+    { "name": "init", "description": "Create a package.json file" },
+    { "name": "list", "alias": "ls", "description": "Print all the versions of packages that are installed", "options": [
+      { "name": "--depth", "description": "Max display depth of the dependency tree" }
+    ]},
+    { "name": "outdated", "description": "Check for outdated packages" },
+    { "name": "why", "description": "Shows all packages that depend on the specified package" },
+    { "name": "exec", "description": "Executes a shell command in scope of a project" },
+    { "name": "store", "description": "Manage the pnpm store", "subcommands": [
+      { "name": "status", "description": "Checks for modified packages in the store" },
+      { "name": "add", "description": "Adds new packages to the store" },
+      { "name": "prune", "description": "Removes unreferenced packages from the store" },
+      { "name": "path", "description": "Returns the path to the active store directory" }
+    ]}
+  ],
+  "options": [
+    { "name": "--help", "alias": "-h", "description": "Show help" },
+    { "name": "--version", "alias": "-v", "description": "Show version" },
+    { "name": "--filter", "description": "Filtering allows you to restrict commands to specific subsets of packages" }
+  ]
+}

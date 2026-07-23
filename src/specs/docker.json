@@ -1,0 +1,142 @@
+{
+  "name": "docker",
+  "description": "Container platform",
+  "subcommands": [
+    { "name": "run", "description": "Create and run a container", "args": [
+      { "name": "image", "generators": [{ "custom": "docker.images" }] }
+    ], "options": [
+      { "name": "--detach", "description": "Run in background" },
+      { "name": "--interactive", "description": "Keep STDIN open" },
+      { "name": "--tty", "description": "Allocate a pseudo-TTY" },
+      { "name": "--rm", "description": "Remove container on exit" },
+      { "name": "--name", "description": "Assign a name" },
+      { "name": ["--publish", "-p"], "description": "Publish port", "args": [{ "name": "port", "generators": [{ "custom": "docker.ports" }] }] },
+      { "name": "--volume", "description": "Bind mount a volume" },
+      { "name": ["--env", "-e"], "description": "Set environment variable", "args": [{ "name": "env", "generators": [{ "custom": "docker.envs" }] }] },
+      { "name": "--network", "description": "Connect to a network" },
+      { "name": "--restart", "description": "Restart policy" },
+      { "name": "--memory", "description": "Memory limit" },
+      { "name": "--cpus", "description": "CPU limit" }
+    ]},
+    { "name": "build", "description": "Build an image from Dockerfile", "options": [
+      { "name": "--tag", "description": "Name and tag" },
+      { "name": "--file", "description": "Dockerfile path" },
+      { "name": "--no-cache", "description": "Build without cache" },
+      { "name": "--build-arg", "description": "Set build argument" },
+      { "name": "--target", "description": "Set target build stage", "args": [{ "name": "stage", "generators": [{ "custom": "docker.stages" }] }] },
+      { "name": "--platform", "description": "Set platform" }
+    ]},
+    { "name": "ps", "description": "List containers", "options": [
+      { "name": "--all", "description": "Show all containers" },
+      { "name": "--quiet", "description": "Only show IDs" },
+      { "name": "--filter", "description": "Filter output" },
+      { "name": "--format", "description": "Format output" }
+    ]},
+    { "name": "images", "description": "List images", "options": [
+      { "name": "--all", "description": "Show all images" },
+      { "name": "--quiet", "description": "Only show IDs" },
+      { "name": "--filter", "description": "Filter output" }
+    ]},
+    { "name": "pull", "description": "Pull an image", "options": [
+      { "name": "--platform", "description": "Set platform" },
+      { "name": "--all-tags", "description": "Pull all tags" }
+    ]},
+    { "name": "push", "description": "Push an image", "options": [
+      { "name": "--all-tags", "description": "Push all tags" }
+    ]},
+    { "name": "exec", "description": "Run a command in a container", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ], "options": [
+      { "name": "--interactive", "description": "Keep STDIN open" },
+      { "name": "--tty", "description": "Allocate a pseudo-TTY" },
+      { "name": "--detach", "description": "Run in background" },
+      { "name": ["--env", "-e"], "description": "Set environment variable", "args": [{ "name": "env", "generators": [{ "custom": "docker.envs" }] }] },
+      { "name": "--workdir", "description": "Working directory" }
+    ]},
+    { "name": "stop", "description": "Stop running containers", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ], "options": [
+      { "name": "--time", "description": "Seconds to wait before killing" }
+    ]},
+    { "name": "start", "description": "Start stopped containers", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ], "options": [
+      { "name": "--attach", "description": "Attach STDOUT/STDERR" },
+      { "name": "--interactive", "description": "Attach STDIN" }
+    ]},
+    { "name": "restart", "description": "Restart containers", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ], "options": [
+      { "name": "--time", "description": "Seconds to wait" }
+    ]},
+    { "name": "rm", "description": "Remove containers", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ], "options": [
+      { "name": "--force", "description": "Force removal" },
+      { "name": "--volumes", "description": "Remove volumes" }
+    ]},
+    { "name": "rmi", "description": "Remove images", "args": [
+      { "name": "image", "generators": [{ "custom": "docker.images" }] }
+    ], "options": [
+      { "name": "--force", "description": "Force removal" },
+      { "name": "--no-prune", "description": "Don't delete untagged parents" }
+    ]},
+    { "name": "logs", "description": "Fetch container logs", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ], "options": [
+      { "name": "--follow", "description": "Follow log output" },
+      { "name": "--tail", "description": "Number of lines" },
+      { "name": "--timestamps", "description": "Show timestamps" },
+      { "name": "--since", "description": "Show logs since time" }
+    ]},
+    { "name": "inspect", "description": "Return low-level info", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ], "options": [
+      { "name": "--format", "description": "Format output" }
+    ]},
+    { "name": "compose", "description": "Docker Compose", "subcommands": [
+      { "name": "up", "description": "Create and start services", "options": [
+        { "name": "--detach", "description": "Run in background" },
+        { "name": "--build", "description": "Build before starting" },
+        { "name": "--force-recreate", "description": "Recreate containers" }
+      ]},
+      { "name": "down", "description": "Stop and remove services", "options": [
+        { "name": "--volumes", "description": "Remove volumes" },
+        { "name": "--rmi", "description": "Remove images" }
+      ]},
+      { "name": "build", "description": "Build services" },
+      { "name": "logs", "description": "View service logs" },
+      { "name": "ps", "description": "List containers" },
+      { "name": "restart", "description": "Restart services" },
+      { "name": "exec", "description": "Execute in service container" },
+      { "name": "pull", "description": "Pull service images" },
+      { "name": "config", "description": "Validate and show config" }
+    ]},
+    { "name": "network", "description": "Manage networks", "subcommands": [
+      { "name": "create", "description": "Create a network" },
+      { "name": "ls", "description": "List networks" },
+      { "name": "rm", "description": "Remove networks" },
+      { "name": "inspect", "description": "Display network info" },
+      { "name": "prune", "description": "Remove unused networks" }
+    ]},
+    { "name": "volume", "description": "Manage volumes", "subcommands": [
+      { "name": "create", "description": "Create a volume" },
+      { "name": "ls", "description": "List volumes" },
+      { "name": "rm", "description": "Remove volumes" },
+      { "name": "inspect", "description": "Display volume info" },
+      { "name": "prune", "description": "Remove unused volumes" }
+    ]},
+    { "name": "system", "description": "Manage Docker", "subcommands": [
+      { "name": "prune", "description": "Remove unused data" },
+      { "name": "df", "description": "Show disk usage" },
+      { "name": "info", "description": "Display system info" },
+      { "name": "events", "description": "Get real-time events" }
+    ]}
+  ],
+  "options": [
+    { "name": "--version", "description": "Show Docker version" },
+    { "name": "--help", "description": "Show help" },
+    { "name": "--debug", "description": "Enable debug mode" },
+    { "name": "--host", "description": "Docker host to connect to" }
+  ]
+}

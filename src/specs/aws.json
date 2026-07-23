@@ -1,0 +1,95 @@
+{
+  "name": "aws",
+  "description": "Amazon Web Services CLI",
+  "subcommands": [
+    { "name": "s3", "description": "Amazon S3 commands", "subcommands": [
+      { "name": "ls", "description": "List S3 objects/buckets" },
+      { "name": "cp", "description": "Copy files to/from S3" },
+      { "name": "mv", "description": "Move files to/from S3" },
+      { "name": "rm", "description": "Delete S3 objects" },
+      { "name": "sync", "description": "Sync directories with S3" },
+      { "name": "mb", "description": "Create S3 bucket" },
+      { "name": "rb", "description": "Remove S3 bucket" },
+      { "name": "presign", "description": "Generate presigned URL" }
+    ]},
+    { "name": "ec2", "description": "Amazon EC2 commands", "subcommands": [
+      { "name": "describe-instances", "description": "Describe EC2 instances" },
+      { "name": "start-instances", "description": "Start EC2 instances" },
+      { "name": "stop-instances", "description": "Stop EC2 instances" },
+      { "name": "terminate-instances", "description": "Terminate EC2 instances" },
+      { "name": "run-instances", "description": "Launch EC2 instances" },
+      { "name": "describe-security-groups", "description": "Describe security groups" },
+      { "name": "create-key-pair", "description": "Create key pair" },
+      { "name": "describe-vpcs", "description": "Describe VPCs" }
+    ]},
+    { "name": "iam", "description": "Identity and Access Management", "subcommands": [
+      { "name": "list-users", "description": "List IAM users" },
+      { "name": "create-user", "description": "Create IAM user" },
+      { "name": "delete-user", "description": "Delete IAM user" },
+      { "name": "list-roles", "description": "List IAM roles" },
+      { "name": "create-role", "description": "Create IAM role" },
+      { "name": "list-policies", "description": "List IAM policies" },
+      { "name": "get-user", "description": "Get IAM user info" }
+    ]},
+    { "name": "lambda", "description": "AWS Lambda functions", "subcommands": [
+      { "name": "list-functions", "description": "List Lambda functions" },
+      { "name": "invoke", "description": "Invoke a Lambda function" },
+      { "name": "create-function", "description": "Create a Lambda function" },
+      { "name": "delete-function", "description": "Delete a Lambda function" },
+      { "name": "update-function-code", "description": "Update function code" },
+      { "name": "get-function", "description": "Get function details" }
+    ]},
+    { "name": "sts", "description": "Security Token Service", "subcommands": [
+      { "name": "get-caller-identity", "description": "Get current caller identity" },
+      { "name": "assume-role", "description": "Assume an IAM role" },
+      { "name": "get-session-token", "description": "Get session token" }
+    ]},
+    { "name": "cloudformation", "description": "CloudFormation stacks", "subcommands": [
+      { "name": "deploy", "description": "Deploy a stack" },
+      { "name": "describe-stacks", "description": "Describe stacks" },
+      { "name": "create-stack", "description": "Create a stack" },
+      { "name": "delete-stack", "description": "Delete a stack" },
+      { "name": "list-stacks", "description": "List stacks" }
+    ]},
+    { "name": "ecs", "description": "Elastic Container Service", "subcommands": [
+      { "name": "list-clusters", "description": "List ECS clusters" },
+      { "name": "list-services", "description": "List ECS services" },
+      { "name": "list-tasks", "description": "List ECS tasks" },
+      { "name": "describe-services", "description": "Describe services" },
+      { "name": "update-service", "description": "Update a service" }
+    ]},
+    { "name": "logs", "description": "CloudWatch Logs", "subcommands": [
+      { "name": "describe-log-groups", "description": "List log groups" },
+      { "name": "get-log-events", "description": "Get log events" },
+      { "name": "filter-log-events", "description": "Filter log events" },
+      { "name": "tail", "description": "Tail log group" }
+    ]},
+    { "name": "dynamodb", "description": "Amazon DynamoDB", "subcommands": [
+      { "name": "list-tables", "description": "List DynamoDB tables" },
+      { "name": "describe-table", "description": "Describe a table" },
+      { "name": "scan", "description": "Scan a table" },
+      { "name": "query", "description": "Query a table" },
+      { "name": "put-item", "description": "Put an item" },
+      { "name": "get-item", "description": "Get an item" }
+    ]},
+    { "name": "ssm", "description": "Systems Manager", "subcommands": [
+      { "name": "get-parameter", "description": "Get a parameter" },
+      { "name": "put-parameter", "description": "Put a parameter" },
+      { "name": "get-parameters-by-path", "description": "Get parameters by path" },
+      { "name": "start-session", "description": "Start a session" }
+    ]},
+    { "name": "configure", "description": "Configure AWS CLI settings", "subcommands": [
+      { "name": "list", "description": "List config settings" },
+      { "name": "set", "description": "Set a config value" },
+      { "name": "get", "description": "Get a config value" }
+    ]}
+  ],
+  "options": [
+    { "name": "--region", "description": "AWS region" },
+    { "name": "--profile", "description": "Named profile" },
+    { "name": "--output", "description": "Output format (json/text/table)" },
+    { "name": "--no-paginate", "description": "Disable pagination" },
+    { "name": "--query", "description": "JMESPath query" },
+    { "name": "--debug", "description": "Enable debug logging" }
+  ]
+}

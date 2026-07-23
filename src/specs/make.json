@@ -1,0 +1,20 @@
+{
+  "name": "make",
+  "description": "GNU make utility to maintain groups of programs",
+  "args": [
+    {
+      "name": "target",
+      "generators": [
+        { "custom": "make.targets" }
+      ]
+    }
+  ],
+  "options": [
+    { "name": "-j", "description": "Specifies the number of jobs to run simultaneously" },
+    { "name": "-f", "description": "Use file as a makefile" },
+    { "name": "-C", "description": "Change to directory before reading the makefile" },
+    { "name": "-n", "alias": "--just-print", "description": "Print commands that would be executed" },
+    { "name": "-B", "alias": "--always-make", "description": "Unconditionally make all targets" },
+    { "name": "-d", "description": "Print lots of debugging information" }
+  ]
+}

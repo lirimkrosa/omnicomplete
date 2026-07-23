@@ -1,0 +1,59 @@
+{
+  "name": "yarn",
+  "description": "Yarn package manager",
+  "args": [
+    {
+      "name": "script",
+      "generators": [
+        { "custom": "npm.scripts" }
+      ]
+    }
+  ],
+  "subcommands": [
+    { "name": "add", "description": "Add dependencies to your package", "options": [
+      { "name": "--dev", "alias": "-D", "description": "Save to devDependencies" },
+      { "name": "--peer", "alias": "-P", "description": "Save to peerDependencies" },
+      { "name": "--exact", "alias": "-E", "description": "Save exact version" },
+      { "name": "--tilde", "alias": "-T", "description": "Save most recent release with the same minor version" }
+    ]},
+    { "name": "install", "description": "Install all dependencies", "options": [
+      { "name": "--check-files", "description": "Verify that already installed files in node_modules did not disappear" },
+      { "name": "--flat", "description": "Only allow one version of a package" },
+      { "name": "--force", "description": "Force reinstall all packages" },
+      { "name": "--frozen-lockfile", "description": "Don't generate a yarn.lock lockfile" },
+      { "name": "--production", "description": "Do not install devDependencies" }
+    ]},
+    { "name": "remove", "description": "Remove a dependency", "options": [] },
+    { "name": "run", "description": "Run a defined package script", "args": [
+      {
+        "name": "script",
+        "generators": [
+          { "custom": "npm.scripts" }
+        ]
+      }
+    ]},
+    { "name": "init", "description": "Initialize a package", "options": [
+      { "name": "--yes", "alias": "-y", "description": "Skip prompt and generate with defaults" }
+    ]},
+    { "name": "upgrade", "description": "Upgrade packages", "options": [
+      { "name": "--latest", "description": "Upgrade to latest version ignoring package.json constraints" }
+    ]},
+    { "name": "upgrade-interactive", "description": "Interactive upgrade packages", "options": [
+      { "name": "--latest", "description": "Upgrade to latest version ignoring package.json constraints" }
+    ]},
+    { "name": "build", "description": "Run the build script" },
+    { "name": "test", "description": "Run the test script" },
+    { "name": "start", "description": "Run the start script" },
+    { "name": "info", "description": "Show information about a package" },
+    { "name": "why", "description": "Show information about why a package is installed" },
+    { "name": "workspace", "description": "Run command in a workspace" },
+    { "name": "workspaces", "description": "Run command in all workspaces", "subcommands": [
+      { "name": "info", "description": "Show information about workspaces" },
+      { "name": "run", "description": "Run a command in all workspaces" }
+    ]}
+  ],
+  "options": [
+    { "name": "--help", "alias": "-h", "description": "Show help" },
+    { "name": "--version", "alias": "-v", "description": "Show version" }
+  ]
+}

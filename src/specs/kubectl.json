@@ -1,0 +1,113 @@
+{
+  "name": "kubectl",
+  "description": "Kubernetes command-line tool",
+  "subcommands": [
+    { "name": "get", "description": "Display resources", "options": [
+      { "name": "--output", "description": "Output format (json/yaml/wide)" },
+      { "name": "--namespace", "description": "Namespace" },
+      { "name": "--all-namespaces", "description": "All namespaces" },
+      { "name": "--selector", "description": "Label selector" },
+      { "name": "--watch", "description": "Watch for changes" },
+      { "name": "--show-labels", "description": "Show labels" }
+    ], "subcommands": [
+      { "name": "pods", "description": "List pods" },
+      { "name": "services", "description": "List services" },
+      { "name": "deployments", "description": "List deployments" },
+      { "name": "nodes", "description": "List nodes" },
+      { "name": "namespaces", "description": "List namespaces" },
+      { "name": "configmaps", "description": "List configmaps" },
+      { "name": "secrets", "description": "List secrets" },
+      { "name": "ingress", "description": "List ingresses" },
+      { "name": "pvc", "description": "List persistent volume claims" },
+      { "name": "events", "description": "List events" },
+      { "name": "all", "description": "List all resources" }
+    ]},
+    { "name": "describe", "description": "Show details of resources", "subcommands": [
+      { "name": "pod", "description": "Describe a pod" },
+      { "name": "service", "description": "Describe a service" },
+      { "name": "deployment", "description": "Describe a deployment" },
+      { "name": "node", "description": "Describe a node" }
+    ]},
+    { "name": "apply", "description": "Apply a configuration", "options": [
+      { "name": "--filename", "description": "File or directory" },
+      { "name": "--recursive", "description": "Process directory recursively" },
+      { "name": "--dry-run", "description": "Simulate apply" },
+      { "name": "--namespace", "description": "Namespace" },
+      { "name": "--force", "description": "Force apply" }
+    ]},
+    { "name": "delete", "description": "Delete resources", "options": [
+      { "name": "--filename", "description": "File to delete from" },
+      { "name": "--namespace", "description": "Namespace" },
+      { "name": "--all", "description": "Delete all resources" },
+      { "name": "--force", "description": "Force deletion" },
+      { "name": "--grace-period", "description": "Grace period" }
+    ]},
+    { "name": "create", "description": "Create a resource", "subcommands": [
+      { "name": "deployment", "description": "Create a deployment" },
+      { "name": "service", "description": "Create a service" },
+      { "name": "namespace", "description": "Create a namespace" },
+      { "name": "configmap", "description": "Create a configmap" },
+      { "name": "secret", "description": "Create a secret" },
+      { "name": "job", "description": "Create a job" }
+    ]},
+    { "name": "logs", "description": "Print container logs", "options": [
+      { "name": "--follow", "description": "Stream logs" },
+      { "name": "--tail", "description": "Lines to show" },
+      { "name": "--since", "description": "Show logs since time" },
+      { "name": "--previous", "description": "Previous container" },
+      { "name": "--container", "description": "Container name" },
+      { "name": "--timestamps", "description": "Include timestamps" }
+    ]},
+    { "name": "exec", "description": "Execute a command in a container", "options": [
+      { "name": "--stdin", "description": "Pass STDIN" },
+      { "name": "--tty", "description": "Allocate TTY" },
+      { "name": "--container", "description": "Container name" }
+    ]},
+    { "name": "port-forward", "description": "Forward ports to a pod", "options": [
+      { "name": "--namespace", "description": "Namespace" },
+      { "name": "--address", "description": "Bind address" }
+    ]},
+    { "name": "scale", "description": "Scale a resource", "options": [
+      { "name": "--replicas", "description": "Number of replicas" }
+    ]},
+    { "name": "rollout", "description": "Manage rollouts", "subcommands": [
+      { "name": "status", "description": "Show rollout status" },
+      { "name": "history", "description": "View rollout history" },
+      { "name": "undo", "description": "Undo a rollout" },
+      { "name": "restart", "description": "Restart a rollout" },
+      { "name": "pause", "description": "Pause a rollout" },
+      { "name": "resume", "description": "Resume a rollout" }
+    ]},
+    { "name": "config", "description": "Modify kubeconfig", "subcommands": [
+      { "name": "use-context", "description": "Set current context" },
+      { "name": "get-contexts", "description": "List contexts" },
+      { "name": "current-context", "description": "Show current context" },
+      { "name": "view", "description": "Display kubeconfig" },
+      { "name": "set-context", "description": "Set context values" }
+    ]},
+    { "name": "top", "description": "Display resource usage", "subcommands": [
+      { "name": "pods", "description": "Pod resource usage" },
+      { "name": "nodes", "description": "Node resource usage" }
+    ]},
+    { "name": "label", "description": "Update labels on resources", "options": [
+      { "name": "--overwrite", "description": "Overwrite existing labels" }
+    ]},
+    { "name": "annotate", "description": "Update annotations", "options": [
+      { "name": "--overwrite", "description": "Overwrite existing" }
+    ]},
+    { "name": "patch", "description": "Patch a resource", "options": [
+      { "name": "--type", "description": "Patch type (strategic/merge/json)" },
+      { "name": "--patch", "description": "Patch content" }
+    ]},
+    { "name": "cp", "description": "Copy files to/from containers", "options": [
+      { "name": "--container", "description": "Container name" }
+    ]}
+  ],
+  "options": [
+    { "name": "--kubeconfig", "description": "Path to kubeconfig" },
+    { "name": "--context", "description": "Kubernetes context" },
+    { "name": "--namespace", "description": "Default namespace" },
+    { "name": "--output", "description": "Output format" },
+    { "name": "--verbose", "description": "Verbose output" }
+  ]
+}

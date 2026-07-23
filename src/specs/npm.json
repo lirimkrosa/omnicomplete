@@ -1,0 +1,93 @@
+{
+  "name": "npm",
+  "description": "Node package manager",
+  "subcommands": [
+    { "name": "install", "description": "Install packages", "options": [
+      { "name": "--save", "description": "Save to dependencies" },
+      { "name": "--save-dev", "description": "Save to devDependencies" },
+      { "name": "--global", "description": "Install globally" },
+      { "name": "--production", "description": "Skip devDependencies" },
+      { "name": "--legacy-peer-deps", "description": "Ignore peer deps" },
+      { "name": "--force", "description": "Force installation" },
+      { "name": "--no-optional", "description": "Skip optional deps" }
+    ]},
+    { "name": "run", "description": "Run a script defined in package.json", "args": [
+      {
+        "name": "script",
+        "generators": [
+          { "custom": "npm.scripts" }
+        ]
+      }
+    ], "options": [
+      { "name": "--silent", "description": "Suppress output" },
+      { "name": "--if-present", "description": "Don't error if missing" }
+    ]},
+    { "name": "test", "description": "Run test script", "options": [] },
+    { "name": "start", "description": "Run start script", "options": [] },
+    { "name": "build", "description": "Run build script", "options": [] },
+    { "name": "init", "description": "Create a package.json", "options": [
+      { "name": "--yes", "description": "Accept all defaults" },
+      { "name": "--scope", "description": "Set scope" }
+    ]},
+    { "name": "publish", "description": "Publish package to registry", "options": [
+      { "name": "--tag", "description": "Publish with tag" },
+      { "name": "--access", "description": "Set access level" },
+      { "name": "--dry-run", "description": "Simulate publish" },
+      { "name": "--otp", "description": "One-time password" }
+    ]},
+    { "name": "update", "description": "Update packages", "options": [
+      { "name": "--global", "description": "Update global packages" },
+      { "name": "--depth", "description": "Update depth" }
+    ]},
+    { "name": "uninstall", "description": "Remove a package", "options": [
+      { "name": "--save", "description": "Remove from dependencies" },
+      { "name": "--global", "description": "Uninstall global" }
+    ]},
+    { "name": "outdated", "description": "Check for outdated packages", "options": [
+      { "name": "--global", "description": "Check global packages" },
+      { "name": "--json", "description": "Output as JSON" },
+      { "name": "--long", "description": "Extended info" }
+    ]},
+    { "name": "list", "description": "List installed packages", "options": [
+      { "name": "--global", "description": "List global packages" },
+      { "name": "--depth", "description": "Dependency depth" },
+      { "name": "--json", "description": "Output as JSON" }
+    ]},
+    { "name": "audit", "description": "Run security audit", "options": [
+      { "name": "--fix", "description": "Fix vulnerabilities" },
+      { "name": "--json", "description": "Output as JSON" },
+      { "name": "--production", "description": "Audit production only" }
+    ]},
+    { "name": "cache", "description": "Manage npm cache", "subcommands": [
+      { "name": "clean", "description": "Remove all cache data" },
+      { "name": "verify", "description": "Verify cache contents" },
+      { "name": "ls", "description": "List cache contents" }
+    ]},
+    { "name": "config", "description": "Manage configuration", "subcommands": [
+      { "name": "set", "description": "Set a config value" },
+      { "name": "get", "description": "Get a config value" },
+      { "name": "delete", "description": "Delete a config value" },
+      { "name": "list", "description": "List all config values" },
+      { "name": "edit", "description": "Open config in editor" }
+    ]},
+    { "name": "link", "description": "Symlink a package folder", "options": [] },
+    { "name": "pack", "description": "Create a tarball", "options": [
+      { "name": "--dry-run", "description": "Simulate pack" }
+    ]},
+    { "name": "whoami", "description": "Display npm username", "options": [] },
+    { "name": "version", "description": "Bump package version", "options": [
+      { "name": "--no-git-tag-version", "description": "Skip git tag" }
+    ]},
+    { "name": "exec", "description": "Run a command from an npm package", "options": [
+      { "name": "--package", "description": "Package to use" },
+      { "name": "--yes", "description": "Auto-confirm" }
+    ]},
+    { "name": "ci", "description": "Clean install from lockfile", "options": [] }
+  ],
+  "options": [
+    { "name": "--version", "description": "Show npm version" },
+    { "name": "--help", "description": "Show help" },
+    { "name": "--loglevel", "description": "Set log level" },
+    { "name": "--registry", "description": "Set registry URL" }
+  ]
+}

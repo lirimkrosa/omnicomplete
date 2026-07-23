@@ -1,0 +1,19 @@
+{
+  "name": "cli-autocomplete",
+  "version": "1.0.0",
+  "description": "Kiro-compatible CLI autocomplete system",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "start": "node bin/cli.js"
+  },
+  "bin": {
+    "omni": "./bin/cli.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1"
+  },
+  "dependencies": {
+    "systray2": "^2.1.4"
+  }
+}

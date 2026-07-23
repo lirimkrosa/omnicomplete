@@ -1,0 +1,17 @@
+{
+  "name": "cat",
+  "description": "Concatenate files and print on the standard output",
+  "args": [
+    {
+      "name": "file",
+      "generators": [
+        { "custom": "filepaths" }
+      ]
+    }
+  ],
+  "options": [
+    { "name": "-n", "alias": "--number", "description": "Number all output lines" },
+    { "name": "-b", "alias": "--number-nonblank", "description": "Number nonempty output lines" },
+    { "name": "-E", "alias": "--show-ends", "description": "Display $ at end of each line" }
+  ]
+}
