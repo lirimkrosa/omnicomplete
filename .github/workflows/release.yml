@@ -55,9 +55,10 @@ jobs:
       - name: Compile Executables
         run: |
           mkdir -p release
-          pkg ./bin-dist/package.json --targets node18-macos-x64,node18-linux-x64,node18-win-x64 --out-path release
+          pkg ./bin-dist/package.json --targets node18-macos-x64,node18-macos-arm64,node18-linux-x64,node18-win-x64 --out-path release
           # Rename output binaries to standard convention
           mv release/omnicomplete-macos release/omnicomplete-macos-x64
+          mv release/omnicomplete-macos-arm64 release/omnicomplete-macos-arm64
           mv release/omnicomplete-linux release/omnicomplete-linux-x64
           mv release/omnicomplete-win.exe release/omnicomplete-windows-x64.exe
 
@@ -66,6 +67,7 @@ jobs:
         with:
           files: |
             release/omnicomplete-macos-x64
+            release/omnicomplete-macos-arm64
             release/omnicomplete-linux-x64
             release/omnicomplete-windows-x64.exe
         env:
