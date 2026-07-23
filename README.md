@@ -16,25 +16,26 @@ OmniComplete is a native autocomplete system for your shell. It brings the rich,
 
 ## 🚀 Installation
 
-1. Clone the repository:
+### Option 1: Using NPM (Recommended)
+Because OmniComplete is extremely fast and lightweight, installing globally via NPM is the best experience across all operating systems.
 ```bash
-git clone https://github.com/your-username/omnicomplete.git
-cd omnicomplete
+npm install -g @lirimkrosa/omnicomplete
 ```
 
-2. Build and install globally:
+### Option 2: Using Homebrew (macOS)
+If you prefer Homebrew, you can tap and install directly:
 ```bash
-npm install
-npm run build
-npm install -g .
+brew tap lirimkrosa/omnicomplete
+brew install omnicomplete
 ```
 
-3. Hook into your shell. Add the following line to your `~/.zshrc`:
+### 3. Hook into your shell
+Add the following line to the bottom of your `~/.zshrc`:
 ```bash
 eval "$(omni hook zsh)"
 ```
 
-4. Reload your shell:
+### 4. Reload your shell
 ```bash
 source ~/.zshrc
 ```
