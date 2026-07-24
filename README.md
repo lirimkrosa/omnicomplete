@@ -1,6 +1,7 @@
 <div align="center">
   <h1>OmniComplete</h1>
   <p><strong>A blazingly fast, modern autocomplete UI for your terminal</strong></p>
+  <img src="./assets/preview.png" alt="OmniComplete Preview" width="600" />
 </div>
 
 OmniComplete is a native autocomplete system for your shell. It brings the rich, visual, IDE-like autocomplete dropdowns (similar to Fig or Warp) to your terminal, but entirely native to Zsh. It operates as a lightweight background daemon and renders UI directly onto your terminal's screen without requiring you to switch terminal emulators or use bulky wrappers.

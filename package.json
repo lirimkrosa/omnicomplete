@@ -1,6 +1,6 @@
 {
   "name": "@lirimkrosa/omnicomplete",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A blazingly fast, native autocomplete UI for Zsh",
   "type": "module",
   "scripts": {
@@ -9,7 +9,8 @@
     "prepublishOnly": "npm run build"
   },
   "files": [
-    "dist"
+    "dist",
+    "assets"
   ],
   "bin": {
     "omni": "./dist/cli.js"
