@@ -82,76 +82,10 @@ export function getSuggestions(input, opts = {}) {
   return suggestFallback(parsed, ctx, history, maxResults);
 }
 
-/**
- * Suggest top-level commands + history.
- */
 function suggestTopLevel(partial, history, maxResults) {
-  const suggestions = [];
-
-  // Built-in commands
-  const visibleCmds = getVisibleCommands();
-  const cmdItems = visibleCmds.map(c => ({
-    name: c.name,
-    description: c.description,
-    icon: c.icon || '📎',
-    type: 'command',
-  }));
-
-  if (partial) {
-    const filtered = fuzzyFilter(partial, cmdItems, { key: 'name', maxResults });
-    for (const { item, score, matches } of filtered) {
-      suggestions.push({
-        text: item.name,
-        displayText: highlightMatches(item.name, matches),
-        description: item.description,
-        type: item.type,
-        icon: item.icon,
-        score: score + 100, // Boost commands over history
-        matches,
-      });
-    }
-  } else {
-    // No partial — show all commands
-    for (const item of cmdItems) {
-      suggestions.push({
-        text: item.name,
-        displayText: item.name,
-        description: item.description,
-        type: item.type,
-        icon: item.icon,
-        score: 50,
-        matches: [],
-      });
-    }
-  }
-
-  // Add history suggestions
-  if (history.length > 0) {
-    const histItems = [...new Set(history)].slice(0, 5).map(h => ({
-      name: h,
-      description: 'From history',
-      icon: '🕐',
-      type: 'history',
-    }));
-    const histFiltered = partial
-      ? fuzzyFilter(partial, histItems, { key: 'name', maxResults: 3 })
-      : histItems.map(item => ({ item, score: 10, matches: [] }));
-
-    for (const { item, score, matches } of histFiltered) {
-      suggestions.push({
-        text: item.name,
-        displayText: item.name,
-        description: item.description,
-        type: item.type,
-        icon: item.icon,
-        score: score + 5,
-        matches,
-      });
-    }
-  }
-
-  suggestions.sort((a, b) => b.score - a.score);
-  return suggestions.slice(0, maxResults);
+  // Disable global top-level suggestions (like history or internal omni commands).
+  // Let Zsh's native completion handle executables in $PATH for the first word.
+  return [];
 }
 
 /**
