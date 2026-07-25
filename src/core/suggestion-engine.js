@@ -29,6 +29,10 @@ import { runGenerator } from './generators.js';
  * @returns {Suggestion[]}
  */
 export function getSuggestions(input, opts = {}) {
+  if (!input || input.trim() === '') {
+    return [];
+  }
+
   const { specs = [], history = [], maxResults = 12 } = opts;
   const parsed = parseInput(input);
   const ctx = getTokenContext(parsed);
