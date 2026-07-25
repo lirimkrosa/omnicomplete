@@ -16,13 +16,14 @@ export function ansiToZshRegionHighlight(ansiString, startOffset = 0) {
   
   // Character offset (not UTF-16 code unit offset!)
   let charOffset = startOffset;
+  const segmenter = new Intl.Segmenter();
   
   let match;
   while ((match = regex.exec(ansiString)) !== null) {
     const textChunk = ansiString.slice(lastIndex, match.index);
     if (textChunk.length > 0) {
-      // Calculate true unicode character length
-      const chunkCharLen = Array.from(textChunk).length;
+      // Calculate true unicode character length (graphemes)
+      const chunkCharLen = Array.from(segmenter.segment(textChunk)).length;
       
       if (currentStyle.fg || currentStyle.bg || currentStyle.bold) {
         let hl = [];
@@ -74,7 +75,7 @@ export function ansiToZshRegionHighlight(ansiString, startOffset = 0) {
   // Remaining text
   const textChunk = ansiString.slice(lastIndex);
   if (textChunk.length > 0) {
-    const chunkCharLen = Array.from(textChunk).length;
+    const chunkCharLen = Array.from(segmenter.segment(textChunk)).length;
     if (currentStyle.fg || currentStyle.bg || currentStyle.bold) {
       let hl = [];
       if (currentStyle.fg) hl.push(`fg=${currentStyle.fg}`);

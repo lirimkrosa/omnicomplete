@@ -182,7 +182,7 @@ function suggestForCommand(cmd, parsed, ctx, maxResults) {
     const flagItems = allFlags.map(f => ({
       name: f.name,
       description: f.description,
-      icon: '🏳️',
+      icon: '⚑',
       type: 'flag',
     }));
 
@@ -250,7 +250,7 @@ function suggestForCommand(cmd, parsed, ctx, maxResults) {
         displayText: f.name,
         description: f.description,
         type: 'flag',
-        icon: '🏳️',
+        icon: '⚑',
         score: 20,
         matches: [],
       });
@@ -358,7 +358,7 @@ function suggestFromSpec(spec, parsed, ctx, maxResults) {
     const optItems = options.map(o => ({
       name: typeof o.name === 'object' ? o.name[0] : o.name,
       description: o.description || '',
-      icon: '🏳️',
+      icon: '⚑',
       type: 'spec-option',
     }));
 
@@ -423,7 +423,7 @@ function suggestFromSpec(spec, parsed, ctx, maxResults) {
         displayText: name,
         description: o.description || '',
         type: 'spec-option',
-        icon: '🏳️',
+        icon: '⚑',
         score: 20,
         matches: [],
       });
