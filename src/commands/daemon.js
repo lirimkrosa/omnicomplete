@@ -113,7 +113,7 @@ export async function execute(args, flags) {
             if (state.suggestions.length > 0) {
               const selected = state.suggestions[state.selectedIndex];
               let buf = state.buffer;
-              const textToInsert = selected.insertText || selected.text;
+              const textToInsert = selected.insertValue || selected.insertText || selected.text;
               const addSpace = selected.appendSpace !== false && !textToInsert.endsWith('/');
               const suffix = addSpace ? ' ' : '';
               

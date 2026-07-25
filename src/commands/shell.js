@@ -135,13 +135,14 @@ export async function execute(args, flags) {
         case 'accept-suggestion':
           if (suggestions.length > 0) {
             const selected = suggestions[selectedIndex];
+            const textToInsert = selected.insertValue || selected.insertText || selected.text;
             const lastSpace = inputBuffer.lastIndexOf(' ');
             if (lastSpace !== -1 && !inputBuffer.endsWith(' ')) {
-              inputBuffer = inputBuffer.slice(0, lastSpace + 1) + selected.text + ' ';
+              inputBuffer = inputBuffer.slice(0, lastSpace + 1) + textToInsert + ' ';
             } else if (inputBuffer.endsWith(' ')) {
-              inputBuffer += selected.text + ' ';
+              inputBuffer += textToInsert + ' ';
             } else {
-              inputBuffer = selected.text + ' ';
+              inputBuffer = textToInsert + ' ';
             }
 
             clearGhostText(ghostLength);
