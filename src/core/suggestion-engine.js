@@ -361,22 +361,7 @@ function suggestFromSpec(spec, parsed, ctx, maxResults) {
     }
   }
 
-  // Also suggest options/flags
-  if (currentSpec.options) {
-    for (const o of currentSpec.options.slice(0, 5)) {
-      const name = typeof o.name === 'object' ? o.name[0] : o.name;
-      suggestions.push({
-        text: name,
-        displayText: name,
-        description: o.description || '',
-        type: 'spec-option',
-        icon: name.startsWith('✨') ? '🪄' : '⚑',
-        score: 20,
-        matches: [],
-        insertValue: o.insertValue,
-      });
-    }
-  }
+  // (Options already handled in the block above)
 
   // Suggest dynamic arguments via generators
   if (currentSpec.args && (!partial.startsWith('-'))) {
