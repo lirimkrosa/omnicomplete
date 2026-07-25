@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Omni Autocomplete - Interactive Playground</title>
+  <meta name="description" content="Try Omni Autocomplete directly in your browser. Blazing fast, AI-powered shell autocomplete for Zsh, Bash, and Fish.">
+  
+  <!-- Google Fonts for UI and Terminal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+  <!-- Background Elements -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  
+  <main class="container">
+    <header class="header">
+      <div class="badge">Live Preview</div>
+      <h1 class="title">Experience <span>Omni</span></h1>
+      <p class="subtitle">Type commands like <code>docker</code>, <code>git</code>, or <code>npm</code> below to see the lightning-fast autocomplete in action.</p>
+    </header>
+
+    <div class="terminal-wrapper">
+      <div class="terminal-header">
+        <div class="window-controls">
+          <span class="control close"></span>
+          <span class="control minimize"></span>
+          <span class="control maximize"></span>
+        </div>
+        <div class="window-title">lirim@macbook:~ — zsh</div>
+      </div>
+      
+      <div class="terminal-body" id="terminal-body">
+        <div class="history" id="history">
+          <!-- History commands will be injected here -->
+        </div>
+        
+        <div class="prompt-line active-prompt">
+          <div class="prompt-info">
+            <span class="dir">~/Projects/awesome-cli</span>
+            <span class="branch">main</span>
+            <span class="arrow">❯</span>
+          </div>
+          <div class="input-container">
+            <span class="ghost-text" id="ghost-text"></span>
+            <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" autofocus>
+            <span class="measure-span" id="measure-span"></span>
+            <div class="cursor" id="cursor"></div>
+          </div>
+        </div>
+        
+        <div class="dropdown-wrapper" id="dropdown-wrapper">
+          <div class="dropdown" id="dropdown">
+            <!-- Autocomplete items will be injected here -->
+          </div>
+          <div class="dropdown-footer" id="dropdown-footer" style="display: none;">
+          <div id="footer-more" style="margin-bottom: 4px;">↓ <span id="more-count">0</span> more</div>
+          <div>↑↓ navigate · tab accept · esc close</div>
+        </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">⚡️</div>
+        <h3>Blazing Fast</h3>
+        <p>Zero latency, written in optimized Javascript for maximum performance.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🧠</div>
+        <h3>Context Aware</h3>
+        <p>Understands your project context, running containers, and Git branches.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🎨</div>
+        <h3>Beautiful UI</h3>
+        <p>Tokyo Night theme out of the box, with full color customization support.</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

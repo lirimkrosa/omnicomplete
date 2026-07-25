@@ -291,14 +291,18 @@ function suggestFromSpec(spec, parsed, ctx, maxResults) {
   }
 
   // Suggest flags from spec
-  if (partial.startsWith('-')) {
+  if (!partial || partial.startsWith('-') || partial.startsWith('✨')) {
     const options = currentSpec.options || [];
-    const optItems = options.map(o => ({
-      name: typeof o.name === 'object' ? o.name[0] : o.name,
-      description: o.description || '',
-      icon: '⚑',
-      type: 'spec-option',
-    }));
+    const optItems = options.map(o => {
+      const name = typeof o.name === 'object' ? o.name[0] : o.name;
+      return {
+        name,
+        description: o.description || '',
+        icon: name.startsWith('✨') ? '🪄' : '⚑',
+        type: 'spec-option',
+        insertValue: o.insertValue
+      };
+    });
 
     const filtered = fuzzyFilter(partial, optItems, { key: 'name', maxResults });
     for (const { item, score, matches } of filtered) {
@@ -310,9 +314,14 @@ function suggestFromSpec(spec, parsed, ctx, maxResults) {
         icon: item.icon,
         score,
         matches,
+        insertValue: item.insertValue,
       });
     }
-    return suggestions.slice(0, maxResults);
+    // Note: We don't return early here if partial doesn't strictly start with '-'
+    // so we can still fall through to arguments if the user is typing something else.
+    if (partial.startsWith('-') || partial.startsWith('✨')) {
+      return suggestions.slice(0, maxResults);
+    }
   }
 
   // Suggest subcommands from spec
@@ -361,9 +370,10 @@ function suggestFromSpec(spec, parsed, ctx, maxResults) {
         displayText: name,
         description: o.description || '',
         type: 'spec-option',
-        icon: '⚑',
+        icon: name.startsWith('✨') ? '🪄' : '⚑',
         score: 20,
         matches: [],
+        insertValue: o.insertValue,
       });
     }
   }

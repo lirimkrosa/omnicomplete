@@ -206,13 +206,14 @@ export async function runDemo(specFilter = null) {
           if (suggestions.length > 0) {
             const selected = suggestions[selectedIndex];
             // Replace last token with selected suggestion
+            const insertText = selected.insertValue || selected.text;
             const lastSpace = inputBuffer.lastIndexOf(' ');
             if (lastSpace !== -1 && !inputBuffer.endsWith(' ')) {
-              inputBuffer = inputBuffer.slice(0, lastSpace + 1) + selected.text + ' ';
+              inputBuffer = inputBuffer.slice(0, lastSpace + 1) + insertText + ' ';
             } else if (inputBuffer.endsWith(' ')) {
-              inputBuffer += selected.text + ' ';
+              inputBuffer += insertText + ' ';
             } else {
-              inputBuffer = selected.text + ' ';
+              inputBuffer = insertText + ' ';
             }
 
             clearGhostText(ghostLength);

@@ -27,6 +27,9 @@
       { "name": "--platform", "description": "Set platform" }
     ]},
     { "name": "ps", "description": "List containers", "options": [
+      { "name": "✨ table", "description": "Format as ID, Name, Ports", "insertValue": "--format \"table {{.ID}}\\t{{.Names}}\\t{{.Ports}}\"" },
+      { "name": "✨ compact", "description": "Format as ID: Name", "insertValue": "--format \"{{.ID}}: {{.Names}}\"" },
+      { "name": "✨ json", "description": "Format as JSON", "insertValue": "--format \"{{json .}}\"" },
       { "name": "--all", "description": "Show all containers" },
       { "name": "--quiet", "description": "Only show IDs" },
       { "name": "--filter", "description": "Filter output" },
