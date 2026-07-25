@@ -156,10 +156,20 @@ _omni_parse_response() {
     CURSOR=\${#BUFFER}
   fi
   
-  # Clean out previous UI highlights before applying new state
+  # Remove Omni's highlights from the previous render
   if [[ \${#_omni_last_highlights[@]} -gt 0 ]]; then
-    region_highlight=("\${region_highlight:| _omni_last_highlights}")
+    region_highlight=("\${region_highlight:|_omni_last_highlights}")
   fi
+  
+  # Clean out any other highlights that exceed the current buffer length
+  local filtered=()
+  for old_hl in "\${region_highlight[@]}"; do
+    local old_parts=("\${(@s/ /)old_hl}")
+    if [[ \${old_parts[1]} -le \${#BUFFER} ]]; then
+      filtered+=("\$old_hl")
+    fi
+  done
+  region_highlight=("\${filtered[@]}")
   
   if [[ -n "\$ansi" ]]; then
     POSTDISPLAY=$'\\n'"\$ansi"
