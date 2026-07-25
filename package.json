@@ -1,6 +1,6 @@
 {
   "name": "@lirimkrosa/omnicomplete",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "A blazingly fast, native autocomplete UI for Zsh",
   "type": "module",
   "scripts": {
