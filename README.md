@@ -8,11 +8,13 @@ OmniComplete is a native autocomplete system for your shell. It brings the rich,
 
 ## ✨ Features
 
-- **Native Zsh Integration**: It operates purely using Zsh's `POSTDISPLAY` and `region_highlight`, meaning zero input lag and no wrappers.
+- **Native Zsh Integration**: Operates purely using Zsh's `POSTDISPLAY` and `region_highlight` — zero input lag and no wrappers.
+- **Deep Docker Compose Intelligence**: Parses your `docker-compose.yml` locally to provide context-aware suggestions for services, volumes, networks, profiles, and environment variables. Includes live container health status (🟢/🔴).
+- **Smart Exec Suggestions**: When running `docker compose exec [service]`, OmniComplete inspects the service's underlying image and suggests relevant tools (e.g., suggesting `psql` for a Postgres image, or `redis-cli` for Redis).
 - **Fuzzy Matching**: Type `T/m/a` to instantly match `project/my_project/api/`.
 - **Rich Visual Dropdowns**: Displays files, folders, commands, and arguments with distinct icons and ANSI colors.
 - **Customizable Themes**: Choose between an `inline` look or a floating `popover` style.
-- **Zero Config Required**: Works out of the box with built-in specs for `git`, `docker`, `npm`, `kubectl`, and file system navigation (`cd`, `ls`).
+- **Zero Config Required**: Works out of the box with built-in specs for `git`, `docker`, `docker compose`, `npm`, `kubectl`, and file system navigation.
 - **TUI Settings**: Built-in terminal UI for visually managing all your settings.
 
 ## 🚀 Installation
