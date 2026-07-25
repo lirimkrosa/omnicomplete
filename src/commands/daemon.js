@@ -23,7 +23,7 @@ export async function execute(args, flags) {
   if (subcommand === 'stop') {
     try {
       const { execSync } = await import('child_process');
-      execSync(`lsof -i :${PORT} | awk 'NR>1 {print $2}' | xargs kill -9 2>/dev/null`);
+      execSync(`lsof -t -i :${PORT} | xargs kill -9 2>/dev/null`);
       console.log('✅ Omni daemon stopped successfully.');
     } catch {
       console.log('Daemon is not running.');
@@ -34,7 +34,7 @@ export async function execute(args, flags) {
   if (subcommand === 'status') {
     try {
       const { execSync } = await import('child_process');
-      const out = execSync(`lsof -i :${PORT} | awk 'NR>1 {print $2}'`, { encoding: 'utf8' }).trim();
+      const out = execSync(`lsof -t -i :${PORT}`, { encoding: 'utf8' }).trim();
       if (out) {
         console.log(`🟢 Omni daemon is running (PID: ${out})`);
       } else {
