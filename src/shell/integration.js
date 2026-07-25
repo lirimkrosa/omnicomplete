@@ -115,6 +115,8 @@ _omni_daemon_check() {
   fi
 }
 
+typeset -g -a _omni_last_highlights=()
+
 _omni_parse_response() {
   local response="\$1"
   local nl=$'\\n'
@@ -155,20 +157,17 @@ _omni_parse_response() {
   fi
   
   # Clean out previous UI highlights before applying new state
-  local filtered=()
-  for old_hl in "\${region_highlight[@]}"; do
-    local old_parts=("\${(@s/ /)old_hl}")
-    if [[ \${old_parts[1]} -le \${#BUFFER} ]]; then
-      filtered+=("\$old_hl")
-    fi
-  done
-  region_highlight=("\${filtered[@]}")
+  if [[ \${#_omni_last_highlights[@]} -gt 0 ]]; then
+    region_highlight=("\${region_highlight:| _omni_last_highlights}")
+  fi
   
   if [[ -n "\$ansi" ]]; then
     POSTDISPLAY=$'\\n'"\$ansi"
+    _omni_last_highlights=("\${highlights[@]}")
     region_highlight+=("\${highlights[@]}")
   else
     POSTDISPLAY=""
+    _omni_last_highlights=()
   fi
 }
 
