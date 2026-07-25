@@ -6,6 +6,8 @@
 import { readFileSync, existsSync, readdirSync, statSync } from 'fs';
 import { join, resolve, dirname, basename } from 'path';
 import { execSync } from 'child_process';
+import { getComposeModel, getComposeService } from '../docker/compose-parser.js';
+import { getToolsForImage } from '../docker/image-tools.js';
 
 const generatorCache = new Map();
 const CACHE_TTL = 2000;
@@ -37,6 +39,13 @@ export function runGenerator(generatorName, contextObj) {
     case 'docker.stages': result = generateDockerStages(); break;
     case 'docker.ports': result = generateDockerPorts(); break;
     case 'docker.envs': result = generateDockerEnvs(); break;
+    case 'compose.services': result = generateComposeServices(); break;
+    case 'compose.volumes': result = generateComposeVolumes(); break;
+    case 'compose.networks': result = generateComposeNetworks(); break;
+    case 'compose.profiles': result = generateComposeProfiles(); break;
+    case 'compose.exec-commands': result = generateComposeExecCommands(contextObj); break;
+    case 'compose.env-vars': result = generateComposeEnvVars(contextObj); break;
+    case 'compose.ports': result = generateComposePorts(); break;
     case 'make.targets': result = generateMakeTargets(); break;
     case 'filepaths': result = generateFilePaths(partial, contextObj.ctx); break;
   }
@@ -321,4 +330,220 @@ function generateFilePaths(partial, ctx) {
     // Ignore read errors
   }
   return suggestions;
+}
+
+// ─── Docker Compose Generators ──────────────────────────────────────────────────
+
+/**
+ * Status indicators for live container state.
+ */
+const STATUS_ICONS = {
+  running: '🟢',
+  exited: '🔴',
+  created: '⚪',
+  paused: '🟡',
+  restarting: '🟠',
+  removing: '🔴',
+  dead: '💀',
+};
+
+/**
+ * Generate suggestions for Docker Compose services.
+ * Includes live status, image name, and port mappings.
+ */
+function generateComposeServices() {
+  const model = getComposeModel();
+  if (!model) return [];
+
+  return model.services.map(svc => {
+    // Build a rich description
+    const parts = [];
+
+    // Live status indicator
+    if (svc.status) {
+      const statusKey = svc.status.toLowerCase();
+      const icon = STATUS_ICONS[statusKey] || '⚪';
+      const healthSuffix = svc.health && svc.health !== 'healthy' ? ` (${svc.health})` : '';
+      parts.push(`${icon} ${svc.status}${healthSuffix}`);
+    }
+
+    // Image name
+    if (svc.image) {
+      parts.push(svc.image);
+    } else if (svc.build) {
+      parts.push(`build: ${svc.build}`);
+    }
+
+    // Port mappings
+    if (svc.ports.length > 0) {
+      parts.push(svc.ports[0]);
+    }
+
+    // Dependency info
+    if (svc.dependedBy.length > 0) {
+      parts.push(`⬆ needed by: ${svc.dependedBy.join(', ')}`);
+    }
+    if (svc.dependsOn.length > 0) {
+      parts.push(`⬇ depends: ${svc.dependsOn.join(', ')}`);
+    }
+
+    return {
+      text: svc.name,
+      description: parts.join(' · ') || 'Service',
+      type: 'arg',
+      icon: '🐳',
+      score: 80,
+    };
+  });
+}
+
+/**
+ * Generate suggestions for Docker Compose named volumes.
+ */
+function generateComposeVolumes() {
+  const model = getComposeModel();
+  if (!model) return [];
+
+  return model.volumes.map(vol => ({
+    text: vol,
+    description: 'Named volume',
+    type: 'arg',
+    icon: '💾',
+    score: 75,
+  }));
+}
+
+/**
+ * Generate suggestions for Docker Compose named networks.
+ */
+function generateComposeNetworks() {
+  const model = getComposeModel();
+  if (!model) return [];
+
+  return model.networks.map(net => ({
+    text: net,
+    description: 'Network',
+    type: 'arg',
+    icon: '🌐',
+    score: 75,
+  }));
+}
+
+/**
+ * Generate suggestions for Docker Compose profiles.
+ */
+function generateComposeProfiles() {
+  const model = getComposeModel();
+  if (!model) return [];
+
+  return model.profiles.map(profile => ({
+    text: profile,
+    description: 'Profile',
+    type: 'arg',
+    icon: '🏷️',
+    score: 75,
+  }));
+}
+
+/**
+ * Generate smart exec command suggestions based on the service's Docker image.
+ * Looks at the previous token in the command to identify which service is targeted.
+ */
+function generateComposeExecCommands(contextObj) {
+  const tokens = contextObj?.parsed?.tokens || [];
+
+  // Find the service name: it's the token right after "exec"
+  let serviceName = null;
+  for (let i = 0; i < tokens.length; i++) {
+    if (tokens[i] === 'exec' && i + 1 < tokens.length) {
+      serviceName = tokens[i + 1];
+      break;
+    }
+  }
+
+  if (!serviceName) return [];
+
+  const svc = getComposeService(serviceName);
+  if (!svc) return [];
+
+  // Get the effective image name
+  const imageName = svc.image || svc.build || null;
+  const tools = getToolsForImage(imageName);
+
+  return tools.map(tool => ({
+    text: tool.cmd,
+    description: tool.desc,
+    type: 'arg',
+    icon: tool.icon || '🔧',
+    score: 70,
+  }));
+}
+
+/**
+ * Generate environment variable suggestions from a compose service.
+ * Looks at the previous tokens to identify which service is targeted.
+ */
+function generateComposeEnvVars(contextObj) {
+  const tokens = contextObj?.parsed?.tokens || [];
+
+  // Find service name after exec/run
+  let serviceName = null;
+  for (let i = 0; i < tokens.length; i++) {
+    if ((tokens[i] === 'exec' || tokens[i] === 'run') && i + 1 < tokens.length) {
+      serviceName = tokens[i + 1];
+      break;
+    }
+  }
+
+  if (!serviceName) {
+    // Fallback: try to suggest from all services' env vars
+    const model = getComposeModel();
+    if (!model) return [];
+    const allEnvs = new Map();
+    for (const svc of model.services) {
+      for (const [key, val] of Object.entries(svc.environment)) {
+        if (!allEnvs.has(key)) allEnvs.set(key, val);
+      }
+    }
+    return [...allEnvs.entries()].map(([key, val]) => ({
+      text: key,
+      description: val ? (String(val).length > 40 ? String(val).slice(0, 37) + '...' : String(val)) : '(defined)',
+      type: 'arg',
+      icon: '🔑',
+      score: 65,
+    }));
+  }
+
+  const svc = getComposeService(serviceName);
+  if (!svc) return [];
+
+  return Object.entries(svc.environment).map(([key, val]) => ({
+    text: key,
+    description: val ? (String(val).length > 40 ? String(val).slice(0, 37) + '...' : String(val)) : '(defined)',
+    type: 'arg',
+    icon: '🔑',
+    score: 65,
+  }));
+}
+
+/**
+ * Generate port mapping suggestions from all compose services.
+ */
+function generateComposePorts() {
+  const model = getComposeModel();
+  if (!model) return [];
+
+  const ports = [];
+  for (const svc of model.services) {
+    for (const port of svc.ports) {
+      ports.push({
+        text: port,
+        description: `${svc.name} port mapping`,
+        type: 'arg',
+        icon: '🔌',
+        score: 70,
+      });
+    }
+  }
+  return ports;
 }

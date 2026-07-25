@@ -94,49 +94,444 @@
     ], "options": [
       { "name": "--format", "description": "Format output" }
     ]},
-    { "name": "compose", "description": "Docker Compose", "subcommands": [
-      { "name": "up", "description": "Create and start services", "options": [
-        { "name": "--detach", "description": "Run in background" },
+    { "name": "tag", "description": "Tag an image", "args": [
+      { "name": "source", "generators": [{ "custom": "docker.images" }] }
+    ]},
+    { "name": "cp", "description": "Copy files between container and host", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ]},
+    { "name": "top", "description": "Display running processes", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ]},
+    { "name": "stats", "description": "Display live resource usage", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ], "options": [
+      { "name": "--all", "description": "Show all containers" },
+      { "name": "--no-stream", "description": "Show snapshot only" },
+      { "name": "--format", "description": "Format output" }
+    ]},
+    { "name": "diff", "description": "Inspect filesystem changes", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ]},
+    { "name": "commit", "description": "Create image from container changes", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ]},
+    { "name": "export", "description": "Export container filesystem", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ]},
+    { "name": "rename", "description": "Rename a container", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ]},
+    { "name": "pause", "description": "Pause a container", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ]},
+    { "name": "unpause", "description": "Unpause a container", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ]},
+    { "name": "kill", "description": "Kill a running container", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ], "options": [
+      { "name": "--signal", "description": "Signal to send" }
+    ]},
+    { "name": "wait", "description": "Block until container stops", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ]},
+    { "name": "attach", "description": "Attach to a running container", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ]},
+    { "name": "port", "description": "List port mappings", "args": [
+      { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+    ]},
+    { "name": "login", "description": "Log in to a registry" },
+    { "name": "logout", "description": "Log out from a registry" },
+    { "name": "search", "description": "Search Docker Hub" },
+    { "name": "save", "description": "Save image to tar archive", "args": [
+      { "name": "image", "generators": [{ "custom": "docker.images" }] }
+    ]},
+    { "name": "load", "description": "Load image from tar archive" },
+    { "name": "history", "description": "Show image history", "args": [
+      { "name": "image", "generators": [{ "custom": "docker.images" }] }
+    ]},
+    { "name": "compose", "description": "Docker Compose", "options": [
+      { "name": ["--file", "-f"], "description": "Compose file path" },
+      { "name": ["--project-name", "-p"], "description": "Project name" },
+      { "name": "--profile", "description": "Activate profile", "args": [{ "name": "profile", "generators": [{ "custom": "compose.profiles" }] }] },
+      { "name": "--env-file", "description": "Environment file path" },
+      { "name": "--progress", "description": "Progress output type" },
+      { "name": "--ansi", "description": "ANSI control characters" }
+    ], "subcommands": [
+      { "name": "up", "description": "Create and start services", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": ["--detach", "-d"], "description": "Run in background" },
         { "name": "--build", "description": "Build before starting" },
-        { "name": "--force-recreate", "description": "Recreate containers" }
+        { "name": "--force-recreate", "description": "Recreate containers" },
+        { "name": "--no-deps", "description": "Don't start dependencies" },
+        { "name": "--no-build", "description": "Don't build images" },
+        { "name": "--no-recreate", "description": "Don't recreate if running" },
+        { "name": "--remove-orphans", "description": "Remove orphan containers" },
+        { "name": "--timeout", "description": "Shutdown timeout in seconds" },
+        { "name": "--wait", "description": "Wait for services to be healthy" },
+        { "name": "--scale", "description": "Scale service to N instances" }
       ]},
       { "name": "down", "description": "Stop and remove services", "options": [
-        { "name": "--volumes", "description": "Remove volumes" },
-        { "name": "--rmi", "description": "Remove images" }
+        { "name": ["--volumes", "-v"], "description": "Remove named volumes" },
+        { "name": "--rmi", "description": "Remove images (all|local)" },
+        { "name": "--remove-orphans", "description": "Remove orphan containers" },
+        { "name": "--timeout", "description": "Shutdown timeout" }
       ]},
-      { "name": "build", "description": "Build services" },
-      { "name": "logs", "description": "View service logs" },
-      { "name": "ps", "description": "List containers" },
-      { "name": "restart", "description": "Restart services" },
-      { "name": "exec", "description": "Execute in service container" },
-      { "name": "pull", "description": "Pull service images" },
-      { "name": "config", "description": "Validate and show config" }
+      { "name": "build", "description": "Build services", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": "--no-cache", "description": "Don't use cache" },
+        { "name": "--pull", "description": "Always pull images" },
+        { "name": "--parallel", "description": "Build in parallel" },
+        { "name": "--build-arg", "description": "Set build-time variable" }
+      ]},
+      { "name": "logs", "description": "View service logs", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": ["--follow", "-f"], "description": "Follow log output" },
+        { "name": "--tail", "description": "Number of lines from end" },
+        { "name": "--timestamps", "description": "Show timestamps" },
+        { "name": "--since", "description": "Show since timestamp" },
+        { "name": "--until", "description": "Show until timestamp" },
+        { "name": "--no-color", "description": "Monochrome output" },
+        { "name": "--no-log-prefix", "description": "Don't print service prefix" }
+      ]},
+      { "name": "ps", "description": "List containers", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": ["--all", "-a"], "description": "Show all containers" },
+        { "name": "--format", "description": "Format output" },
+        { "name": "--quiet", "description": "Only show IDs" },
+        { "name": "--status", "description": "Filter by status" },
+        { "name": "--services", "description": "Show services only" }
+      ]},
+      { "name": "restart", "description": "Restart services", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": "--timeout", "description": "Shutdown timeout" },
+        { "name": "--no-deps", "description": "Don't restart dependencies" }
+      ]},
+      { "name": "stop", "description": "Stop services", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": "--timeout", "description": "Shutdown timeout" }
+      ]},
+      { "name": "start", "description": "Start services", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ]},
+      { "name": "exec", "description": "Execute in service container", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] },
+        { "name": "command", "generators": [{ "custom": "compose.exec-commands" }] }
+      ], "options": [
+        { "name": ["--detach", "-d"], "description": "Run in background" },
+        { "name": ["--interactive", "-i"], "description": "Keep STDIN open" },
+        { "name": ["--tty", "-t"], "description": "Allocate a pseudo-TTY" },
+        { "name": ["--env", "-e"], "description": "Set environment variable", "args": [{ "name": "var", "generators": [{ "custom": "compose.env-vars" }] }] },
+        { "name": "--index", "description": "Container index (scaled service)" },
+        { "name": "--user", "description": "Run as user" },
+        { "name": "--workdir", "description": "Working directory" },
+        { "name": "--privileged", "description": "Give extended privileges" }
+      ]},
+      { "name": "run", "description": "Run a one-off command", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] },
+        { "name": "command", "generators": [{ "custom": "compose.exec-commands" }] }
+      ], "options": [
+        { "name": ["--detach", "-d"], "description": "Run in background" },
+        { "name": "--rm", "description": "Remove container after exit" },
+        { "name": "--no-deps", "description": "Don't start dependencies" },
+        { "name": "--service-ports", "description": "Use service port mappings" },
+        { "name": "--name", "description": "Container name" },
+        { "name": ["--env", "-e"], "description": "Set environment variable", "args": [{ "name": "var", "generators": [{ "custom": "compose.env-vars" }] }] },
+        { "name": "--user", "description": "Run as user" },
+        { "name": "--workdir", "description": "Working directory" },
+        { "name": "--entrypoint", "description": "Override entrypoint" },
+        { "name": ["--volume", "-v"], "description": "Bind mount a volume" },
+        { "name": ["--publish", "-p"], "description": "Publish ports" },
+        { "name": "--build", "description": "Build before running" }
+      ]},
+      { "name": "pull", "description": "Pull service images", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": "--ignore-buildable", "description": "Ignore buildable services" },
+        { "name": "--include-deps", "description": "Pull dependencies too" },
+        { "name": "--quiet", "description": "Suppress progress output" }
+      ]},
+      { "name": "push", "description": "Push service images", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": "--ignore-push-failures", "description": "Ignore push errors" }
+      ]},
+      { "name": "config", "description": "Validate and show config", "options": [
+        { "name": "--format", "description": "Output format" },
+        { "name": "--resolve-image-digests", "description": "Pin image digests" },
+        { "name": "--no-interpolate", "description": "Don't resolve variables" },
+        { "name": "--services", "description": "Print service names" },
+        { "name": "--volumes", "description": "Print volume names" },
+        { "name": "--profiles", "description": "Print profile names" },
+        { "name": "--images", "description": "Print image names" }
+      ]},
+      { "name": "top", "description": "Display running processes", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ]},
+      { "name": "kill", "description": "Force stop services", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": "--signal", "description": "Signal to send" },
+        { "name": "--remove-orphans", "description": "Remove orphans" }
+      ]},
+      { "name": "pause", "description": "Pause services", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ]},
+      { "name": "unpause", "description": "Unpause services", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ]},
+      { "name": "create", "description": "Create service containers", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": "--build", "description": "Build before creating" },
+        { "name": "--force-recreate", "description": "Recreate containers" },
+        { "name": "--no-recreate", "description": "Don't recreate" }
+      ]},
+      { "name": "cp", "description": "Copy files to/from container", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": "--index", "description": "Container index" },
+        { "name": "--follow-link", "description": "Follow symlinks" },
+        { "name": "--archive", "description": "Archive mode" }
+      ]},
+      { "name": "port", "description": "Show public port for a port binding", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": "--protocol", "description": "Protocol (tcp|udp)" },
+        { "name": "--index", "description": "Container index" }
+      ]},
+      { "name": "events", "description": "Receive real-time events", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": "--json", "description": "JSON output" }
+      ]},
+      { "name": "images", "description": "List images used by services", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": "--quiet", "description": "Only show IDs" },
+        { "name": "--format", "description": "Format output" }
+      ]},
+      { "name": "watch", "description": "Watch build context and rebuild on changes", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": "--no-up", "description": "Don't start services" },
+        { "name": "--quiet", "description": "Suppress output" }
+      ]},
+      { "name": "attach", "description": "Attach to a service container", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": "--index", "description": "Container index" },
+        { "name": "--detach-keys", "description": "Override detach key sequence" },
+        { "name": "--no-stdin", "description": "Don't attach STDIN" },
+        { "name": "--sig-proxy", "description": "Proxy signals" }
+      ]},
+      { "name": "wait", "description": "Block until containers stop", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": "--down-project", "description": "Tear down project after wait" }
+      ]},
+      { "name": "rm", "description": "Remove stopped service containers", "args": [
+        { "name": "service", "generators": [{ "custom": "compose.services" }] }
+      ], "options": [
+        { "name": ["--force", "-f"], "description": "Don't ask for confirmation" },
+        { "name": "--stop", "description": "Stop before removing" },
+        { "name": ["--volumes", "-v"], "description": "Remove anonymous volumes" }
+      ]},
+      { "name": "version", "description": "Show Docker Compose version" },
+      { "name": "ls", "description": "List running Compose projects", "options": [
+        { "name": "--all", "description": "Show all projects" },
+        { "name": "--format", "description": "Format output" },
+        { "name": "--quiet", "description": "Only show names" }
+      ]}
     ]},
     { "name": "network", "description": "Manage networks", "subcommands": [
-      { "name": "create", "description": "Create a network" },
-      { "name": "ls", "description": "List networks" },
-      { "name": "rm", "description": "Remove networks" },
-      { "name": "inspect", "description": "Display network info" },
-      { "name": "prune", "description": "Remove unused networks" }
+      { "name": "create", "description": "Create a network", "options": [
+        { "name": "--driver", "description": "Network driver" },
+        { "name": "--subnet", "description": "Subnet in CIDR format" },
+        { "name": "--gateway", "description": "Gateway address" },
+        { "name": "--internal", "description": "Restrict external access" },
+        { "name": "--attachable", "description": "Allow containers to attach" }
+      ]},
+      { "name": "ls", "description": "List networks", "options": [
+        { "name": "--filter", "description": "Filter output" },
+        { "name": "--format", "description": "Format output" },
+        { "name": "--quiet", "description": "Only show IDs" }
+      ]},
+      { "name": "rm", "description": "Remove networks", "args": [
+        { "name": "network", "generators": [{ "custom": "compose.networks" }] }
+      ]},
+      { "name": "inspect", "description": "Display network info", "args": [
+        { "name": "network", "generators": [{ "custom": "compose.networks" }] }
+      ], "options": [
+        { "name": "--format", "description": "Format output" }
+      ]},
+      { "name": "prune", "description": "Remove unused networks", "options": [
+        { "name": "--force", "description": "Don't ask for confirmation" },
+        { "name": "--filter", "description": "Filter output" }
+      ]},
+      { "name": "connect", "description": "Connect container to network", "args": [
+        { "name": "network", "generators": [{ "custom": "compose.networks" }] },
+        { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+      ]},
+      { "name": "disconnect", "description": "Disconnect container from network", "args": [
+        { "name": "network", "generators": [{ "custom": "compose.networks" }] },
+        { "name": "container", "generators": [{ "custom": "docker.containers" }] }
+      ]}
     ]},
     { "name": "volume", "description": "Manage volumes", "subcommands": [
-      { "name": "create", "description": "Create a volume" },
-      { "name": "ls", "description": "List volumes" },
-      { "name": "rm", "description": "Remove volumes" },
-      { "name": "inspect", "description": "Display volume info" },
-      { "name": "prune", "description": "Remove unused volumes" }
+      { "name": "create", "description": "Create a volume", "options": [
+        { "name": "--driver", "description": "Volume driver" },
+        { "name": "--name", "description": "Volume name" }
+      ]},
+      { "name": "ls", "description": "List volumes", "options": [
+        { "name": "--filter", "description": "Filter output" },
+        { "name": "--format", "description": "Format output" },
+        { "name": "--quiet", "description": "Only show names" }
+      ]},
+      { "name": "rm", "description": "Remove volumes", "args": [
+        { "name": "volume", "generators": [{ "custom": "compose.volumes" }] }
+      ], "options": [
+        { "name": "--force", "description": "Force removal" }
+      ]},
+      { "name": "inspect", "description": "Display volume info", "args": [
+        { "name": "volume", "generators": [{ "custom": "compose.volumes" }] }
+      ], "options": [
+        { "name": "--format", "description": "Format output" }
+      ]},
+      { "name": "prune", "description": "Remove unused volumes", "options": [
+        { "name": "--all", "description": "Remove all unused volumes" },
+        { "name": "--force", "description": "Don't ask for confirmation" },
+        { "name": "--filter", "description": "Filter output" }
+      ]}
     ]},
     { "name": "system", "description": "Manage Docker", "subcommands": [
-      { "name": "prune", "description": "Remove unused data" },
-      { "name": "df", "description": "Show disk usage" },
-      { "name": "info", "description": "Display system info" },
-      { "name": "events", "description": "Get real-time events" }
+      { "name": "prune", "description": "Remove unused data", "options": [
+        { "name": "--all", "description": "Remove all unused images" },
+        { "name": "--force", "description": "Don't ask for confirmation" },
+        { "name": "--volumes", "description": "Prune volumes too" }
+      ]},
+      { "name": "df", "description": "Show disk usage", "options": [
+        { "name": "--format", "description": "Format output" },
+        { "name": "--verbose", "description": "Verbose output" }
+      ]},
+      { "name": "info", "description": "Display system info", "options": [
+        { "name": "--format", "description": "Format output" }
+      ]},
+      { "name": "events", "description": "Get real-time events", "options": [
+        { "name": "--filter", "description": "Filter events" },
+        { "name": "--format", "description": "Format output" },
+        { "name": "--since", "description": "Show events since" },
+        { "name": "--until", "description": "Show events until" }
+      ]}
+    ]},
+    { "name": "image", "description": "Manage images", "subcommands": [
+      { "name": "ls", "description": "List images" },
+      { "name": "rm", "description": "Remove images", "args": [{ "name": "image", "generators": [{ "custom": "docker.images" }] }] },
+      { "name": "pull", "description": "Pull an image" },
+      { "name": "push", "description": "Push an image" },
+      { "name": "tag", "description": "Tag an image", "args": [{ "name": "image", "generators": [{ "custom": "docker.images" }] }] },
+      { "name": "build", "description": "Build an image" },
+      { "name": "history", "description": "Show image history", "args": [{ "name": "image", "generators": [{ "custom": "docker.images" }] }] },
+      { "name": "inspect", "description": "Display image info", "args": [{ "name": "image", "generators": [{ "custom": "docker.images" }] }] },
+      { "name": "prune", "description": "Remove unused images" },
+      { "name": "save", "description": "Save images to tar", "args": [{ "name": "image", "generators": [{ "custom": "docker.images" }] }] },
+      { "name": "load", "description": "Load image from tar" },
+      { "name": "import", "description": "Import from tarball" }
+    ]},
+    { "name": "container", "description": "Manage containers", "subcommands": [
+      { "name": "ls", "description": "List containers" },
+      { "name": "run", "description": "Create and run", "args": [{ "name": "image", "generators": [{ "custom": "docker.images" }] }] },
+      { "name": "start", "description": "Start containers", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "stop", "description": "Stop containers", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "restart", "description": "Restart containers", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "rm", "description": "Remove containers", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "exec", "description": "Execute command", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "logs", "description": "Fetch logs", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "inspect", "description": "Display info", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "kill", "description": "Kill containers", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "pause", "description": "Pause containers", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "unpause", "description": "Unpause containers", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "attach", "description": "Attach to container", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "cp", "description": "Copy files", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "diff", "description": "Inspect changes", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "export", "description": "Export filesystem", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "rename", "description": "Rename container", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "top", "description": "Display processes", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "stats", "description": "Resource usage", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "wait", "description": "Wait for stop", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "commit", "description": "Create image", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "port", "description": "List port mappings", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "update", "description": "Update config", "args": [{ "name": "container", "generators": [{ "custom": "docker.containers" }] }] },
+      { "name": "prune", "description": "Remove stopped containers" }
+    ]},
+    { "name": "buildx", "description": "Extended build capabilities", "subcommands": [
+      { "name": "build", "description": "Build with BuildKit" },
+      { "name": "create", "description": "Create a builder instance" },
+      { "name": "inspect", "description": "Inspect builder" },
+      { "name": "ls", "description": "List builders" },
+      { "name": "rm", "description": "Remove a builder" },
+      { "name": "use", "description": "Set current builder" },
+      { "name": "prune", "description": "Remove build cache" },
+      { "name": "bake", "description": "Build from HCL/JSON file" },
+      { "name": "imagetools", "description": "Work with manifest lists" }
+    ]},
+    { "name": "context", "description": "Manage contexts", "subcommands": [
+      { "name": "create", "description": "Create a context" },
+      { "name": "ls", "description": "List contexts" },
+      { "name": "rm", "description": "Remove a context" },
+      { "name": "inspect", "description": "Display context info" },
+      { "name": "use", "description": "Set current context" },
+      { "name": "show", "description": "Show current context" },
+      { "name": "update", "description": "Update a context" },
+      { "name": "export", "description": "Export a context" },
+      { "name": "import", "description": "Import a context" }
+    ]},
+    { "name": "plugin", "description": "Manage plugins", "subcommands": [
+      { "name": "install", "description": "Install a plugin" },
+      { "name": "ls", "description": "List plugins" },
+      { "name": "rm", "description": "Remove a plugin" },
+      { "name": "enable", "description": "Enable a plugin" },
+      { "name": "disable", "description": "Disable a plugin" },
+      { "name": "inspect", "description": "Display plugin info" },
+      { "name": "create", "description": "Create a plugin" }
+    ]},
+    { "name": "manifest", "description": "Manage manifests", "subcommands": [
+      { "name": "create", "description": "Create a manifest list" },
+      { "name": "inspect", "description": "Inspect a manifest" },
+      { "name": "push", "description": "Push a manifest list" },
+      { "name": "rm", "description": "Delete a manifest list" },
+      { "name": "annotate", "description": "Add annotations" }
+    ]},
+    { "name": "trust", "description": "Manage content trust", "subcommands": [
+      { "name": "inspect", "description": "View trust data" },
+      { "name": "revoke", "description": "Revoke trust" },
+      { "name": "sign", "description": "Sign an image" },
+      { "name": "key", "description": "Manage keys" }
+    ]},
+    { "name": "scout", "description": "Docker Scout vulnerability scanning", "subcommands": [
+      { "name": "quickview", "description": "Quick vulnerability overview" },
+      { "name": "cves", "description": "Display CVEs" },
+      { "name": "recommendations", "description": "Display recommendations" },
+      { "name": "compare", "description": "Compare images" },
+      { "name": "sbom", "description": "Generate SBOM" }
     ]}
   ],
   "options": [
     { "name": "--version", "description": "Show Docker version" },
     { "name": "--help", "description": "Show help" },
     { "name": "--debug", "description": "Enable debug mode" },
-    { "name": "--host", "description": "Docker host to connect to" }
+    { "name": "--host", "description": "Docker host to connect to" },
+    { "name": "--config", "description": "Client config directory" },
+    { "name": "--log-level", "description": "Set log level" },
+    { "name": "--tls", "description": "Use TLS" },
+    { "name": "--tlsverify", "description": "Use TLS and verify remote" }
   ]
 }
