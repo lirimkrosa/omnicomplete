@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+# Ensure only one release runs at a time — queue subsequent pushes
+concurrency:
+  group: release-pipeline
+  cancel-in-progress: false
+
 jobs:
   release:
     name: Auto Version and Publish
@@ -16,8 +21,10 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
         with:
-          # Use TAP_GITHUB_TOKEN (or standard GITHUB_TOKEN) so the workflow can push back to main
-          token: ${{ secrets.TAP_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          # Use TAP_GITHUB_TOKEN so the workflow can push back to main
+          token: ${{ secrets.TAP_GITHUB_TOKEN }}
+          # Fetch full history so we can pull/rebase
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -32,6 +39,11 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
+
+      - name: Pull Latest Main
+        run: |
+          # Pull latest to avoid version conflicts when multiple commits land quickly
+          git pull --rebase origin main
 
       - name: Bump Version
         id: bump
