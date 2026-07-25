@@ -2,6 +2,9 @@
  * Main Orchestrator — routes commands, manages the interactive demo,
  * and coordinates between autocomplete, settings, and toolbar.
  */
+import { readFileSync } from 'fs';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 
 import { commands, findCommand, findSubcommand, getVisibleCommands, flattenCommands, globalFlags } from './core/command-registry.js';
 import { parseInput } from './core/parser.js';
@@ -73,7 +76,14 @@ export function showHelp() {
  * Show version info.
  */
 export function showVersion() {
-  writeLine(`omni v1.0.0`);
+  try {
+    const __dirname = dirname(fileURLToPath(import.meta.url));
+    const pkgPath = join(__dirname, '../package.json');
+    const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
+    writeLine(`omni v${pkg.version}`);
+  } catch {
+    writeLine(`omni v1.0.0 (fallback)`);
+  }
 }
 
 /**
