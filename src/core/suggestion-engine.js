@@ -298,7 +298,7 @@ function suggestFromSpec(spec, parsed, ctx, maxResults) {
       return {
         name,
         description: o.description || '',
-        icon: name.startsWith('✨') ? '🪄' : '⚑',
+        icon: name.startsWith('✨') ? ' ' : '⚑',
         type: 'spec-option',
         insertValue: o.insertValue
       };
