@@ -18,6 +18,34 @@ function getSession(id) {
 }
 
 export async function execute(args, flags) {
+  const subcommand = args[0];
+
+  if (subcommand === 'stop') {
+    try {
+      const { execSync } = await import('child_process');
+      execSync(`lsof -i :${PORT} | awk 'NR>1 {print $2}' | xargs kill -9 2>/dev/null`);
+      console.log('✅ Omni daemon stopped successfully.');
+    } catch {
+      console.log('Daemon is not running.');
+    }
+    return;
+  }
+
+  if (subcommand === 'status') {
+    try {
+      const { execSync } = await import('child_process');
+      const out = execSync(`lsof -i :${PORT} | awk 'NR>1 {print $2}'`, { encoding: 'utf8' }).trim();
+      if (out) {
+        console.log(`🟢 Omni daemon is running (PID: ${out})`);
+      } else {
+        console.log('🔴 Omni daemon is stopped.');
+      }
+    } catch {
+      console.log('🔴 Omni daemon is stopped.');
+    }
+    return;
+  }
+
   specs = loadAllSpecs();
   const config = loadConfig();
   const theme = config.layoutTheme || 'inline';
